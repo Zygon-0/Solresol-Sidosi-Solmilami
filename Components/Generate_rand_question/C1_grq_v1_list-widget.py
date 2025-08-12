@@ -128,14 +128,42 @@ class FQMenu:
         self.new_question()
 
     def new_question(self):
-        current_question = 1
+        # var setup
+        current_question = 2
+        # type(l, b) |
+        widget_list = ["l", "hello world I am a label that reads hello world I am a label that reads..."]
+        buttons_list = [
+            "b",
+            ["Familiar - Written Form", "#3377BB", "#115599", None],
+            ["Transitional - Musical Notation", "#229922", "#007700", None],
+            ["Tough - Line Form", "#CC6600", "#aa4400", None],
+            ["Extreme - Audio Form", "#990000", "#770000", None]
+        ]
+
+        def make_widget(widget):
+            if widget[0] == "l":
+                widget_made = Label(self.question_frame, wraplength=500, text=widget[1], justify="left",
+                                font=font_set(16))
+                widget_made.grid()
+
+            if widget[0] == "b":
+                for count, item in enumerate(buttons_list):
+                    if count != 0:
+                        widget_made = Button(self.question_frame, text=item[0], bg=item[1], height=2, fg="#EEEEEE",
+                                         font=font_set(is_bold=1), width=25, activeforeground="#333333",
+                                         activebackground=item[2], command=item[3])
+                        widget_made.grid()
+
+        make_widget(widget_list)
+        make_widget(buttons_list)
+
 
         # Initial start screen
         if current_question == 1:
             starting_text = ("\nIn Solresol there are only 7 letters, which come together to create around 300 words,"
                              " below 4 syllables. these letters are the common scale of.\n\n")
             tmp_label_1 = Label(self.question_frame, wraplength=500, text=starting_text, justify="left",
-                                font=font_set(16),)
+                                font=font_set(16))
             tmp_label_1.grid(row=3)
             tmp_label_1_colours = [
                 ["Do,", "#F33", 0],

@@ -1,17 +1,45 @@
+#!/usr/bin/env python3
 import tkinter as tk
 
-# Create the main window
-root = tk.Tk()
-root.title("Specific Position Window")
 
-# Define the desired width, height, and coordinates
-window_width = 400
-window_height = 300
-x_coordinate = 100  # X-coordinate from the left edge of the screen
-y_coordinate = 500   # Y-coordinate from the top edge of the screen
+class Gui:
+    fullScreen = False
 
-# Set the window's geometry
-root.geometry(f"{window_width}x{window_height}+{x_coordinate}+{y_coordinate}")
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.bind("<F11>", self.toggleFullScreen)
+        self.root.bind("<Alt-Return>", self.toggleFullScreen)
+        self.root.bind("<Control-w>", self.quit)
+        self.root.mainloop()
 
-# Start the Tkinter event loop
-root.mainloop()
+    def toggleFullScreen(self, event):
+        if self.fullScreen:
+            self.deactivateFullscreen()
+        else:
+            self.activateFullscreen()
+
+    def activateFullscreen(self):
+        self.fullScreen = True
+
+        # Store geometry for reset
+        self.geometry = self.root.geometry()
+
+        # Hides borders and make truly fullscreen
+        self.root.overrideredirect(True)
+
+        # Maximize window (Windows only). Optionally set screen geometry if you have it
+        self.root.state("zoomed")
+
+    def deactivateFullscreen(self):
+        self.fullScreen = False
+        self.root.state("normal")
+        self.root.geometry(self.geometry)
+        self.root.overrideredirect(False)
+
+    def quit(self, event=None):
+        print("quiting...", event)
+        self.root.quit()
+
+
+if __name__ == '__main__':
+    Gui()
