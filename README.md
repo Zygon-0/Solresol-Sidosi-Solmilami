@@ -1,14 +1,13 @@
-# Project Title
+# Solresol Sidosi Solmilami
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+This program is a simple program that teaches the very basics of a very obscure language known as Solresol.
+The program contains 4 difficulties that range from what the letters are, to the very basics of answering and asking questions.
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
+* R-v1.0
     * Initial Release
+    * See [commit change]() or See [release history]()
 
