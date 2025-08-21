@@ -211,71 +211,190 @@ questions_list = [   # progressive sorted diffs for questions (~4)
         [
             ["l", "Which Solresol word means 'I, me, we'?", 10],
             ["b", "Dore", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Dore" is actually "I, me, we"'],
-            ["b", "Domi", "#E33", "#FF3333", None, 5, 0, 'Sorry but the meaning of "Domi" is actually "you"'],
-            ["b", "Redo", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Redo" is actually "my, mine"']
+            ["b", "Domi", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Domi" is actually "you"'],
+            ["b", "Redo", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Redo" is actually "my, mine"']
         ],
         [
             ["l", "If you want to refer to yourself in Solresol, which word would you use?", 10],
-            ["b", "Remi", "#E33", "#FF3333", None, 5, 0, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
+            ["b", "Remi", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
             ["b", "Dore", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Dore" is actually "I, me, we"'],
-            ["b", "Fado", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"']
+            ["b", "Fado", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"']
         ],
 
         # 3-4 Domi
         [
             ["l", "Which Solresol word means 'you'?", 10],
             ["b", "Domi", "#06F", "#0055FF", None, 5, 1, 'Sorry but the meaning of "Domi" is actually "you"'],
-            ["b", "Fare", "#E33", "#FF3333", None, 5, 0, 'Sorry but the meaning of "Fare" is actually "that, that one, those"'],
-            ["b", "Lafa", "#3C9", "#33BAFE", None, 5, 0, 'Sorry but the meaning of "Lafa" is actually "bad"']
+            ["b", "Fare", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Fare" is actually "that, that one, those"'],
+            ["b", "Lafa", "#3C9", "#33BAFE", None, 5, 3, 'Sorry but the meaning of "Lafa" is actually "bad"']
         ],
         [
             ["l", "If you are talking directly to someone, which word represents 'you'?", 10],
             ["b", "Domi", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Domi" is actually "you"'],
-            ["b", "Dore", "#3C9", "#33BAFE", None, 5, 0, 'Sorry but the meaning of "Dore" is actually "I, me, we"'],
-            ["b", "Solre", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"']
+            ["b", "Dore", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Dore" is actually "I, me, we"'],
+            ["b", "Solre", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"']
         ],
 
         # 5-6 Redo
         [
             ["l", "Which word means 'my, mine'?", 10],
             ["b", "Redo", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Redo" is actually "my, mine"'],
-            ["b", "Remi", "#E33", "#FF3333", None, 5, 0, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
-            ["b", "Fami", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Fami" is actually "this, this one, these"']
+            ["b", "Remi", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
+            ["b", "Fami", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Fami" is actually "this, this one, these"']
         ],
         [
             ["l", "If you want to say something belongs to you, which Solresol word do you use?", 10],
             ["b", "Redo", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Redo" is actually "my, mine"'],
-            ["b", "Fala", "#3C9", "#33BAFE", None, 5, 0, 'Sorry but the meaning of "Fala" is actually "good, tasty, exquisite, delicious"'],
-            ["b", "Mido", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Mido" is actually "for"']
+            ["b", "Fala", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Fala" is actually "good, tasty, exquisite, delicious"'],
+            ["b", "Mido", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Mido" is actually "for"']
         ],
 
         # 7-8 Remi
         [
             ["l", "Which Solresol word means 'your, yours'?", 10],
             ["b", "Remi", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
-            ["b", "Fare", "#3C9", "#33BAFE", None, 5, 0, 'Sorry but the meaning of "Fare" is actually "that, that one, those"'],
-            ["b", "Solfa", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Solfa" is actually "because, for"']
+            ["b", "Fare", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Fare" is actually "that, that one, those"'],
+            ["b", "Solfa", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Solfa" is actually "because"']
         ],
         [
             ["l", "When pointing to something that belongs to the listener, which word is correct?", 10],
             ["b", "Remi", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
-            ["b", "Domi", "#E33", "#FF3333", None, 5, 0, 'Sorry but the meaning of "Domi" is actually "you"'],
-            ["b", "Fado", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"']
+            ["b", "Domi", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Domi" is actually "you"'],
+            ["b", "Fado", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"']
         ],
 
         # 9-10 Mido
         [
             ["l", "Which Solresol word means 'for'?", 10],
             ["b", "Mido", "#06F", "#0055FF", None, 5, 1, 'Sorry but the meaning of "Mido" is actually "for"'],
-            ["b", "Solfa", "#3C9", "#33BAFE", None, 5, 0, 'Sorry but the meaning of "Solfa" is actually "because, for"'],
-            ["b", "Lafa", "#E33", "#FF3333", None, 5, 0, 'Sorry but the meaning of "Lafa" is actually "bad"']
+            ["b", "Solfa", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Solfa" is actually "because"'],
+            ["b", "Lafa", "#E33", "#FF3333", None, 5, 3, 'Sorry but the meaning of "Lafa" is actually "bad"']
         ],
         [
-            ["l", "If giving something with a purpose, which word covers the 'for' part?", 10],
+            ["l", "If giving something with a purpose ie 'this is for you', which word covers the 'for' part?", 10],
             ["b", "Mido", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Mido" is actually "for"'],
-            ["b", "Remi", "#E33", "#FF3333", None, 5, 0, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
-            ["b", "Dore", "#06F", "#0055FF", None, 5, 0, 'Sorry but the meaning of "Dore" is actually "I, me, we"']
+            ["b", "Remi", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Remi" is actually "your, yours"'],
+            ["b", "Dore", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Dore" is actually "I, me, we"']
+        ],
+
+        # 13-14 Fado
+        [
+            ["l", "Which word is used to ask 'What?' or 'What is this?' in Solresol?", 10],
+            ["b", "Fado", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"'],
+            ["b", "Fami", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Fami" is actually "this, this one, these"'],
+            ["b", "Solre", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"']
+        ],
+        [
+            ["l", "If you see something strange and want to know what it is, which word works?", 10],
+            ["b", "Fado", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"'],
+            ["b", "Redo", "#06F", "#0055FF", None, 5, 2, 'Sorry but the meaning of "Redo" is actually "my, mine"'],
+            ["b", "Lafa", "#E33", "#FF3333", None, 5, 3, 'Sorry but the meaning of "Lafa" is actually "bad"']
+        ],
+
+        # 15-16 Fare
+        [
+            ["l", "Which word means 'that, that one, those'?", 10],
+            ["b", "Fare", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Fare" is actually "that, that one, those"'],
+            ["b", "Fami", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Fami" is actually "this, this one, these"'],
+            ["b", "Remi", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Remi" is actually "your, yours"']
+        ],
+        [
+            ["l", "If you point to an object far away and say 'that one', which word applies?", 10],
+            ["b", "Fare", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Fare" is actually "that, that one, those"'],
+            ["b", "Solre", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"'],
+            ["b", "Medo", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Medo" is actually "duty, obligation"']
+        ],
+
+        # 17-18 Fami
+        [
+            ["l", "Which Solresol word means 'this, this one, these'?", 10],
+            ["b", "Fami", "#06F", "#0055FF", None, 5, 1, 'Sorry but the meaning of "Fami" is actually "this, this one, these"'],
+            ["b", "Fare", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Fare" is actually "that, that one, those"'],
+            ["b", "Fala", "#3C9", "#33BAFE", None, 5, 3, 'Sorry but the meaning of "Fala" is actually "good, tasty, exquisite, delicious"']
+        ],
+        [
+            ["l", "If something is close to you and you want to refer to it, which word fits?", 10],
+            ["b", "Fami", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Fami" is actually "this, this one, these"'],
+            ["b", "Mido", "#06F", "#0055FF", None, 5, 2, 'Sorry but the meaning of "Mido" is actually "for"'],
+            ["b", "Domi", "#E33", "#FF3333", None, 5, 3, 'Sorry but the meaning of "Domi" is actually "you"']
+        ],
+
+        # 19-20 Fala
+        [
+            ["l", "Which word means 'good, tasty, exquisite, delicious'?", 10],
+            ["b", "Fala", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Fala" is actually "good, tasty, exquisite, delicious"'],
+            ["b", "Lafa", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Lafa" is actually "bad"'],
+            ["b", "Fado", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"']
+        ],
+        [
+            ["l", "After a great meal, which Solresol word could you use to describe it?", 10],
+            ["b", "Fala", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Fala" is actually "good, tasty, exquisite, delicious"'],
+            ["b", "Solre", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"'],
+            ["b", "Fare", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Fare" is actually "that, that one, those"']
+        ],
+
+        # 21-22 Solre
+        [
+            ["l", "Which Solresol word means 'Why?, What for?'?", 10],
+            ["b", "Solre", "#06F", "#0055FF", None, 5, 1, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"'],
+            ["b", "Solfa", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Solfa" is actually "because"'],
+            ["b", "Fado", "#E33", "#FF3333", None, 5, 3, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"']
+        ],
+        [
+            ["l", "If you want to ask for the reason something is happening, which word is correct?", 10],
+            ["b", "Solre", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"'],
+            ["b", "Medo", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Medo" is actually "duty, obligation"'],
+            ["b", "Fami", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Fami" is actually "this, this one, these"']
+        ],
+
+        # 23-24 Solfa
+        [
+            ["l", "Which Solresol word means 'because'?", 10],
+            ["b", "Solfa", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Solfa" is actually "because"'],
+            ["b", "Mido", "#06F", "#0055FF", None, 5, 2, 'Sorry but the meaning of "Mido" is actually "for"'],
+            ["b", "Solre", "#3C9", "#33BAFE", None, 5, 3, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"']
+        ],
+        [
+            ["l", "When giving a reason for something, which word would you use?", 10],
+            ["b", "Solfa", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Solfa" is actually "because"'],
+            ["b", "Fado", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Fado" is actually "what?, what is this?"'],
+            ["b", "Lafa", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Lafa" is actually "bad"']
+        ],
+
+        # 25-26 Lafa
+        [
+            ["l", "Which Solresol word means 'bad'?", 10],
+            ["b", "Lafa", "#E33", "#FF3333", None, 5, 1, 'Sorry but the meaning of "Lafa" is actually "bad"'],
+            ["b", "Fala", "#3C9", "#33BAFE", None, 5, 2, 'Sorry but the meaning of "Fala" is actually "good, tasty, exquisite, delicious"'],
+            ["b", "Redo", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Redo" is actually "my, mine"']
+        ],
+        [
+            ["l", "If something is unpleasant or not good, which word do you use?", 10],
+            ["b", "Lafa", "#3C9", "#33BAFE", None, 5, 1, 'Sorry but the meaning of "Lafa" is actually "bad"'],
+            ["b", "Fami", "#E33", "#FF3333", None, 5, 2, 'Sorry but the meaning of "Fami" is actually "this, this one, these"'],
+            ["b", "Solre", "#06F", "#0055FF", None, 5, 3, 'Sorry but the meaning of "Solre" is actually "Why?, What for?"']
         ]
+    ],
+    [ # full sentences
+        [
+            ["l", "If asked the question \"Fami Mido Dore Sol\" what would be a Positive response", 10],
+            ["b", "Si Mido Domi", "#3C9", "#33BAFE", None, 5, 1, ''],
+            ["b", "Do Remi Lafa", "#E33", "#FF3333", None, 5, 2, 'Responding with "No your bad" doesnt really feel like a positive response too me'],
+            ["b", "Solfa Fala Fa Mido Sol", "#06F", "#0055FF", None, 5, 3, 'What made you pick that one? That isn\'t even a proper sentence']
+        ],
+        [
+            ["l", "If asked the question \"Solre Domi Lafa Mido Sol\" what would be a logical response", 10],
+            ["b", "Do Dore Fala", "#3C9", "#33BAFE", None, 5, 1, ''],
+            ["b", "Fa Solre Mi Do Fa Solre", "#E33", "#FF3333", None, 5, 2, '"To why or no to why", that is the question'],
+            ["b", "Salami Fala Sol", "#06F", "#0055FF", None, 5, 3, 'yes, salami is good, especially with crackers and hummus']
+        ],
+        [
+            ["l", "which of the following is in relation to an object", 10],
+            ["b", "Fado Fami Mido", "#3C9", "#33BAFE", None, 5, 1, ''],
+            ["b", "Solfa Remi Fala", "#E33", "#FF3333", None, 5, 2, 'im just gonna hope that "Fala" in that sentence, is meant as "good" and not somthing else'],
+            ["b", "Domi Si Mi Do Sol", "#06F", "#0055FF", None, 5, 3, '"Dore si, Dore Si." - "...Fare Fala"']
+        ]
+
     ]
 ]
 

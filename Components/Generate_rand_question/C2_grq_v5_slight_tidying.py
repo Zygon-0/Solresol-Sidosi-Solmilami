@@ -346,7 +346,7 @@ class DisplayHelp:
         background = "#ffe6cc"
         self.help_box = Toplevel()
 
-        partner.help_button.config(state=DISABLED)
+        partner.stats_button.config(state=DISABLED)
         for item in partner.questions_options:
             item.config(state=DISABLED)
 
@@ -370,7 +370,7 @@ class DisplayHelp:
             item.config(bg=background)
 
     def close_help(self, partner, rounds_played):
-        partner.help_button.config(state=NORMAL)
+        partner.stats_button.config(state=NORMAL)
         for item in partner.questions_options:
             item.config(state=NORMAL)
         self.help_box.destroy()
