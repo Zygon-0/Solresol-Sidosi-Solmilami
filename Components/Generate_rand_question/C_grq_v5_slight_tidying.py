@@ -1,8 +1,7 @@
-import random
 from random import randint
 from tkinter import *
 from functools import partial
-from Components.Grp_DB.C_grq_db_v4 import questions_list
+from Components.Grp_DB.C_grq_db_v3 import questions_list
 
 # global vars
 root_geometry = ""
@@ -79,9 +78,9 @@ class StartMenu:
 
 
         buttons_list = [
-            ["Familiar", "#3377BB", "#115599", partial(self.to_familiar, 0, 0)],
-            ["Transitional", "#229922", "#007700", partial(self.to_familiar, 16, 0)],
-            ["Tough", "#CC6600", "#aa4400", partial(self.to_familiar, 32, 1)],
+            ["Familiar", "#3377BB", "#115599", partial(self.to_familiar, 0)],
+            ["Transitional", "#229922", "#007700", partial(self.to_familiar, 16)],
+            ["Tough", "#CC6600", "#aa4400", None],
             ["Extreme", "#990000", "#770000", None]
         ]
 
@@ -97,12 +96,10 @@ class StartMenu:
             self.button_ref_list.append(self.make_button)
 
 
-    def to_familiar(self, int_start, dif_start):
+    def to_familiar(self, int_start):
         global current_question
-        global questions_diff_group
         global root_geometry
         current_question = int_start
-        questions_diff_group = dif_start
         root.update()
         root_geometry = root.winfo_geometry()
         root.attributes("-fullscreen")
@@ -115,14 +112,13 @@ class FQMenu:
 
     def __init__(self):
         """
-        Area for the different grades of questions
+        Questions area for the familiar grade questions
         """
         self.starting_question = current_question
         self.starting_text = ""
         self.f_q_box = Toplevel()
         global root_geometry
         self.f_q_box.geometry(root_geometry)
-        self.f_q_box.minsize(486, 600)
         self.f_q_box.attributes("-fullscreen", root.attributes("-fullscreen"))
 
         # Bind the F11 key to the toggle_fullscreen function
@@ -213,15 +209,14 @@ class FQMenu:
 
             for c, i in enumerate(widget):
                 if len(i) > 3:
-                    print("i", i[6])
                     if i[6] == 1:
                         questions_options[c].config(command=lambda: self.new_question(questions_options))
-            print("")
-            questions_options[0].grid(row=0, pady=5)
-            questions_options.pop(0)
-            random.shuffle(questions_options)
+
             for count, item in enumerate(questions_options):
-                item.grid(row=count+1, pady=5)
+                if widget[count][1] == "l":
+                    item.grid(row=count, pady=10)
+                else:
+                    item.grid(row=count, pady=5)
 
             # self.help_button = Button(self.f_q_frame, text="💡", padx=0, pady=0, font=("Arial", 35), width=2,
             #                     highlightthickness=0, bd=0, fg="#FFE264", compound="center",
@@ -249,13 +244,8 @@ class FQMenu:
                     item.config(state=DISABLED)
 
 
-        if current_question > 17:
-            self.temp_instructions.config(text=f"Current Question: {current_question - self.starting_question - 1}",
-                                          fg="#000")
-        elif current_question > 1:
-            self.temp_instructions.config(text=f"Current Question: {current_question - self.starting_question - 1}",
-                                          fg="#000")
-
+        if current_question > 1:
+            self.temp_instructions.config(text=f"Current Question: {current_question - self.starting_question - 1}", fg="#000")
 
         global questions_diff_group
         # diff # starting info screen
@@ -286,11 +276,7 @@ class FQMenu:
             continue_button.grid(row=10)
 
         elif current_question == 17:
-            if self.starting_question == 0:
-                self.starting_question += 1
-            self.temp_instructions.config(text="### In this section you will learn ###\nThe \"transitional\","
-                                               " and mildly difficult, definitions of all 7 of the 1 syllable"
-                                               " Solresol word\'s")
+            self.temp_instructions.config(text="### In this section you will learn ###\nThe \"transitional\", and mildly difficult, definitions of all 7 of the 1 syllable Solresol word\'s")
             self.starting_text = ("\nNow that you have a bit of a grasp on the letters in Solresol, "
                              "lets get you familiar with each syllables word definitions."
                              "\nThe definitions are as follows"
@@ -333,34 +319,6 @@ class FQMenu:
             self.heading_english.config(text="(between questions)")
             self.temp_heading.config(text="\n Mimiresol  Sisolsi ")
 
-        elif current_question == 33:
-            if self.starting_question == 16 or self.starting_question == 0:
-                self.starting_question += 1
-            self.temp_instructions.config(text="### In this section you will learn ###\nThe \"Tough\","
-                                               " and relatively difficult, definitions of 13 of the 2 syllable"
-                                               " Solresol word\'s")
-            self.starting_text = ("\nNow that you\'ve learned some the verry basic\'s of the solresol word,"
-                                  " its time to up the difficulty with 13 of the most helpful to know, 2 SYLLABLE,"
-                                  " words in Solresol. But this time with no info Here so you'll just have to guess for"
-                                  " any new words you come across, but dont worry you\'ll get it down eventually"
-                                "\n\n")
-            tmp_label_1 = Label(self.question_frame, wraplength=500, text=self.starting_text, justify="left",
-                                font=font_set(16))
-            tmp_label_1.grid(row=3)
-
-            continue_button = Button(self.question_frame, text="Continue", bg="#0A0", height=2, fg="#EEEEEE",
-                                     font=font_set(is_bold=1), width=25, activeforeground="#333333",
-                                     activebackground="#070", command=lambda: self.new_question(questions_options))
-            continue_button.grid(row=4)
-
-            back_button = Button(self.question_frame, text="Practice longer", bg="#DB0", height=1, fg="#EEEEEE",
-                                     font=font_set(is_bold=1), width=25, activeforeground="#333333",
-                                     activebackground="#070", command=lambda: keep_practicing())
-            back_button.grid(row=5)
-
-            self.heading_english.config(text="(tough questions)")
-            self.temp_heading.config(text="\n Resire  Sisolsi ")
-
         else:
             global questions_diff_group
             question = randint(0, int(len(questions_list[questions_diff_group]))) - 1
@@ -370,7 +328,7 @@ class FQMenu:
             make_widget(questions_list[questions_diff_group][question])
 
         # go to next diff
-        if (current_question == 17) or (current_question == -1) or (current_question == 33):
+        if (current_question == 17) or (current_question == -1):
             questions_diff_group += 1
 
 
@@ -428,7 +386,6 @@ if __name__ == "__main__":
     root.title("Solresol Sidosi Solmilami")
     root.geometry("1280x720+310+120")
     root.resizable(width=True, height=True)
-    root.minsize(486, 600)
 
     # Bind the F11 key to the toggle_fullscreen function
     def toggle_fullscreen(event=None):

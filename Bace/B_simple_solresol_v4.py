@@ -3,7 +3,7 @@ import tkinter
 from random import randint
 from tkinter import *
 from functools import partial
-from Solresol.Components.Grp_DB.C0_grq_db_v4 import questions_list
+from Components.Grp_DB.C_grq_db_v4 import questions_list
 
 # global vars
 root_geometry = ""
@@ -247,12 +247,12 @@ class FQMenu:
                 best_streak = current_streak
             self.new_question(questions_options)
 
-        def wrong_button_clicked(button):
-            self.temp_instructions.config(text=button, fg="#E33")
+        def wrong_button_clicked(error_text, button_text):
+            self.temp_instructions.config(text=error_text, fg="#E33")
             widget_text = ""
             for widget in questions_list[questions_diff_group][question]:
                 if len(widget) > 3:
-                    if widget[7] == button:
+                    if widget[7] == error_text:
                         widget_text = widget[1]
             global best_streak
             global current_streak

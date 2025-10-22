@@ -1,11 +1,10 @@
 ##### Imports #####
 import random
+import tkinter.ttk
+from random import randint
 from tkinter import *
 from functools import partial
 from Solresol.Components.Grp_DB.C_grq_db_v4 import questions_list
-
-
-
 
 
 ##### Global Variables #####
@@ -14,9 +13,15 @@ from Solresol.Components.Grp_DB.C_grq_db_v4 import questions_list
 root_geometry = ""
 
 # vars for the questions themselves
-question_set_len = 15 + 1 # questions + info screen
+question_set_len = 15 + 1  # questions + info screen
 current_question = 0
+questions_right = 0
+questions_wrong = 0
 got_q_wrong = 0
+
+# vars for the streak system
+current_streak = 0
+best_streak = 0
 
 # var for which question dif the player is at
 questions_diff_group = 0
@@ -32,14 +37,11 @@ colour_list = [
     ["#E33", "#C11"],
     ["#F80", "#D60"],
     ["#DB0", "#B90"],
-    ["#0A0", "#080"],
+    ["#0B0", "#080"],
     ["#3C9", "#1A7"],
     ["#06F", "#04D"],
     ["#609", "#407"]
 ]
-
-
-
 
 
 ##### Functions #####
@@ -74,9 +76,6 @@ def font_set(font_size=12, is_fancy_font=0, is_bold=0, is_italic=0):
     return tuple(font)
 
 
-
-
-
 ##### Classes #####
 
 # starting screen
@@ -84,6 +83,7 @@ class StartMenu:
     """
     Runs the main start menu
     """
+
     def __init__(self):
         """
         start menu GUI
@@ -109,7 +109,8 @@ class StartMenu:
         self.line.grid(row=1)
 
         # small label showing the english translation of the title
-        self.heading_english = Label(self.temp_frame, text="(language learning program)", font=font_set(10), foreground="#555555")
+        self.heading_english = Label(self.temp_frame, text="(language learning program)", font=font_set(10),
+                                     foreground="#555555")
         self.heading_english.place(relx=0.5, rely=0.5, anchor="center", y=-119)
 
         # sub-heading with a small note about what is on the current screen
@@ -155,6 +156,7 @@ class StartMenu:
         FQMenu()
         root.withdraw()
 
+
 # questions screen
 class FQMenu:
     def __init__(self):
@@ -179,6 +181,7 @@ class FQMenu:
         def toggle_fullscreen_function(event=None):
             state = not self.f_q_box.attributes("-fullscreen")
             self.f_q_box.attributes("-fullscreen", state)
+
         self.f_q_box.bind("<F11>", toggle_fullscreen_function)
 
         # Configure side columns to ensure centered widgets
@@ -220,10 +223,6 @@ class FQMenu:
         # start the first question
         self.questions_options = []
         self.new_question(self.questions_options)
-
-
-
-
 
     # function to pick, configure, and display the question (this is most of the program)
     def new_question(self, questions_options):
@@ -269,9 +268,11 @@ class FQMenu:
 
                 # if the widget id is "b" then make the button and preset the command to wrong_button_clicked
                 elif items[0] == "b":
-                    widget_made = Button(self.question_frame, text=items[1], bg=colour_list[items[6]][0], height=2, fg="#EEEEEE",
+                    widget_made = Button(self.question_frame, text=items[1], bg=colour_list[items[6]][0], height=2,
+                                         fg="#EEEEEE",
                                          font=font_set(is_bold=1), width=25, activeforeground="#333333",
-                                         activebackground=colour_list[items[6]][1], command=partial(wrong_button_clicked, str(items[7]), str(items[1])))
+                                         activebackground=colour_list[items[6]][1],
+                                         command=partial(wrong_button_clicked, str(items[7]), str(items[1])))
                     global temp_instructions_list
                     questions_options.append(widget_made)
                     temp_instructions_list.append(items[7])
@@ -292,6 +293,12 @@ class FQMenu:
             for count, items in enumerate(questions_options):
                 items.grid(row=count + 1, pady=5)
 
+            # make the stats screen button and place it on the screen
+            self.stats_button = Button(self.f_q_frame, text="     ℹ️", padx=0, pady=0, font=("Arial", 30),
+                                       highlightthickness=0, bd=0, fg="#EC0",
+                                       command=lambda: self.to_help())
+            self.stats_button.place(relx=0.5, x=-220, y=75, width=20, height=40)
+
         # function for the keep practicing button is pressed
         def keep_practicing():
             global current_question
@@ -303,11 +310,30 @@ class FQMenu:
 
         # function for when the correct answer button is pressed
         def correct_button_clicked():
+            global best_streak
+            global current_streak
+            global questions_right
+            if got_q_wrong == 0:
+                questions_right += 1
+            current_streak += 1
+            if current_streak > best_streak:
+                best_streak = current_streak
             self.new_question(questions_options)
 
         # function for when any of the wrong answer buttons are pressed
         def wrong_button_clicked(error_text, button_text):
             self.sub_heading.config(text=error_text, fg="#E33")
+            global best_streak
+            global current_streak
+            global questions_wrong
+            global got_q_wrong
+            if got_q_wrong == 0:
+                questions_wrong += 1
+                got_q_wrong = 1
+
+            if current_streak > best_streak:
+                best_streak = current_streak
+            current_streak = 0
 
             for item in questions_options:
                 if item.cget("text") == button_text:
@@ -323,8 +349,9 @@ class FQMenu:
         # display info about the upcoming questions if at certain question numbers
         if current_question == 1:
             # the main info text to displayed
-            self.starting_text = ("\nIn Solresol there are only 7 letters, which come together to create around 300 words,"
-                             " below 4 syllables. these letters are the common scale of.\nDo, Re, Mi, Fa, Sol, La, Si.\n")
+            self.starting_text = (
+                "\nIn Solresol there are only 7 letters, which come together to create around 300 words,"
+                " below 4 syllables. these letters are the common scale of.\nDo, Re, Mi, Fa, Sol, La, Si.\n")
             tmp_label_1 = Label(self.question_frame, wraplength=500, text=self.starting_text, justify="left",
                                 font=font_set(16))
             tmp_label_1.grid(row=3)
@@ -334,7 +361,7 @@ class FQMenu:
                 ["Do,", "#E33", 0],
                 ["Re,", "#F80", 1],
                 ["Mi,", "#DB0", 2],
-                ["Fa,", "#0A0", 3],
+                ["Fa,", "#0B0", 3],
                 ["Sol,", "#3C9", 4],
                 ["La,", "#06F", 5.15],
                 ["Si.", "#609", 6.15]
@@ -343,14 +370,14 @@ class FQMenu:
             # for each piece of text to be colored make that colored text and pricelessly place it on screen
             for i in range(0, len(tmp_label_1_colours)):
                 tmp_label_1_color = Label(self.question_frame, wraplength=500, text=tmp_label_1_colours[i][0],
-                                      justify="left", font=font_set(16), foreground=tmp_label_1_colours[i][1],
-                                      background="#EEE")
+                                          justify="left", font=font_set(16), foreground=tmp_label_1_colours[i][1],
+                                          background="#EEE")
                 tmp_label_1_color.place(x=(37 * tmp_label_1_colours[i][2]), y=96)
 
             # button to continue on with the next set of questions
-            continue_button = Button(self.question_frame, text="Continue", bg="#0A0", height=2, fg="#EEEEEE",
-                                 font=font_set(is_bold=1), width=25, activeforeground="#333333",
-                                 activebackground="#070", command=lambda: self.new_question(questions_options))
+            continue_button = Button(self.question_frame, text="Continue", bg="#0B0", height=2, fg="#EEEEEE",
+                                     font=font_set(is_bold=1), width=25, activeforeground="#333333",
+                                     activebackground="#070", command=lambda: self.new_question(questions_options))
             continue_button.grid(row=10)
 
         elif current_question == question_set_len + 1:
@@ -360,19 +387,19 @@ class FQMenu:
 
             # the main info text to displayed
             self.sub_heading.config(text="### In this section you will learn ###\nThe \"transitional\","
-                                               " and mildly difficult, definitions of all 7 of the 1 syllable"
-                                               " Solresol word\'s")
+                                         " and mildly difficult, definitions of all 7 of the 1 syllable"
+                                         " Solresol word\'s")
             self.starting_text = ("\nNow that you have a bit of a grasp on the letters in Solresol, "
-                             "lets get you familiar with each syllables word definitions."
-                             "\nThe definitions are as follows"
-                             "\n\n ●   Do is   \"No, not, nor\""
-                             "\n ●   Re is   \"And\""
-                             "\n ●   Mi is   \"Or\""
-                             "\n ●   Fa is   \"At, to\""
-                             "\n ●   Sol is  \"If\""
-                             "\n ●   la  is  \"The\""
-                             "\n ●   Si is   \"Yes, willingly\""
-                             "\n\n")
+                                  "lets get you familiar with each syllables word definitions."
+                                  "\nThe definitions are as follows"
+                                  "\n\n ●   Do is   \"No, not, nor\""
+                                  "\n ●   Re is   \"And\""
+                                  "\n ●   Mi is   \"Or\""
+                                  "\n ●   Fa is   \"At, to\""
+                                  "\n ●   Sol is  \"If\""
+                                  "\n ●   la  is  \"The\""
+                                  "\n ●   Si is   \"Yes, willingly\""
+                                  "\n\n")
             tmp_label_1 = Label(self.question_frame, wraplength=500, text=self.starting_text, justify="left",
                                 font=font_set(16))
             tmp_label_1.grid(row=3)
@@ -382,7 +409,7 @@ class FQMenu:
                 ["Do", "#E33", 0],
                 ["Re", "#F80", 1],
                 ["Mi", "#DB0", 2],
-                ["Fa", "#0A0", 3],
+                ["Fa", "#0B0", 3],
                 ["Sol", "#3C9", 4],
                 ["La", "#06F", 5],
                 ["Si", "#609", 6]
@@ -390,20 +417,20 @@ class FQMenu:
             # for each piece of text to be colored make that colored text and pricelessly place it on screen
             for i in range(0, len(tmp_label_1_colours)):
                 tmp_label_1_color = Label(self.question_frame, wraplength=500, text=tmp_label_1_colours[i][0],
-                                      justify="left", font=font_set(16), foreground=tmp_label_1_colours[i][1],
-                                      background="#EEE")
+                                          justify="left", font=font_set(16), foreground=tmp_label_1_colours[i][1],
+                                          background="#EEE")
                 tmp_label_1_color.place(x=34, y=144 + (23.9 * tmp_label_1_colours[i][2]))
 
             # button to continue on with the next set of questions
-            continue_button = Button(self.question_frame, text="Continue", bg="#0A0", height=2, fg="#EEEEEE",
+            continue_button = Button(self.question_frame, text="Continue", bg="#0B0", height=2, fg="#EEEEEE",
                                      font=font_set(is_bold=1), width=25, activeforeground="#333333",
                                      activebackground="#070", command=lambda: self.new_question(questions_options))
             continue_button.grid(row=4)
 
             # button to go back to the previous set of questions
             back_button = Button(self.question_frame, text="Practice longer", bg="#DB0", height=1, fg="#EEEEEE",
-                                     font=font_set(is_bold=1), width=25, activeforeground="#333333",
-                                     activebackground="#070", command=lambda: keep_practicing())
+                                 font=font_set(is_bold=1), width=25, activeforeground="#333333",
+                                 activebackground="#070", command=lambda: keep_practicing())
             back_button.grid(row=5)
 
             # change the title and translation to the new sections corresponding text
@@ -417,27 +444,27 @@ class FQMenu:
 
             # the main info text to displayed
             self.sub_heading.config(text="### In this section you will learn ###\nThe \"Tough\","
-                                               " and relatively difficult, definitions of 13 of the 2 syllable"
-                                               " Solresol word\'s")
+                                         " and relatively difficult, definitions of 13 of the 2 syllable"
+                                         " Solresol word\'s")
             self.starting_text = ("\nNow that you\'ve learned some the verry basic\'s of the solresol word,"
                                   " its time to up the difficulty with 13 of the most helpful to know, 2 SYLLABLE,"
                                   " words in Solresol. But this time with no info Here so you'll just have to guess for"
                                   " any new words you come across, but dont worry you\'ll get it down eventually"
-                                "\n\n")
+                                  "\n\n")
             tmp_label_1 = Label(self.question_frame, wraplength=500, text=self.starting_text, justify="left",
                                 font=font_set(16))
             tmp_label_1.grid(row=3)
 
             # button to continue on with the next set of questions
-            continue_button = Button(self.question_frame, text="Continue", bg="#0A0", height=2, fg="#EEEEEE",
+            continue_button = Button(self.question_frame, text="Continue", bg="#0B0", height=2, fg="#EEEEEE",
                                      font=font_set(is_bold=1), width=25, activeforeground="#333333",
                                      activebackground="#070", command=lambda: self.new_question(questions_options))
             continue_button.grid(row=4)
 
             # button to go back to the previous set of questions
             back_button = Button(self.question_frame, text="Practice longer", bg="#DB0", height=1, fg="#EEEEEE",
-                                     font=font_set(is_bold=1), width=25, activeforeground="#333333",
-                                     activebackground="#070", command=lambda: keep_practicing())
+                                 font=font_set(is_bold=1), width=25, activeforeground="#333333",
+                                 activebackground="#070", command=lambda: keep_practicing())
             back_button.grid(row=5)
 
             # change the title and translation to the new sections corresponding text
@@ -446,13 +473,14 @@ class FQMenu:
 
         elif current_question == (3 * question_set_len) + 1:
             # bullet proofing for the question that the program tells the user they are on
-            if self.starting_question == 2 or self.starting_question == (question_set_len + 1) or self.starting_question == (2 * question_set_len):
+            if self.starting_question == 2 or self.starting_question == (
+                    question_set_len + 1) or self.starting_question == (2 * question_set_len):
                 self.starting_question += 1
 
             # the main info text to displayed
             self.sub_heading.config(text="### In this section you will learn ###\nThe \"Extreme\","
-                                               " and quite difficult, responses to a few short sentences"
-                                               " Solresol word\'s")
+                                         " and quite difficult, responses to a few short sentences"
+                                         " Solresol word\'s")
             self.starting_text = ("\n!!! This section assumes that you have extensively practised the last three"
                                   "sections !!! Aside from that the only additional info needed for this section"
                                   "is that a sol st the verry end of a sentence means that sentence is a question"
@@ -462,15 +490,15 @@ class FQMenu:
             tmp_label_1.grid(row=3)
 
             # button to continue on with the next set of questions
-            continue_button = Button(self.question_frame, text="Continue", bg="#0A0", height=2, fg="#EEEEEE",
+            continue_button = Button(self.question_frame, text="Continue", bg="#0B0", height=2, fg="#EEEEEE",
                                      font=font_set(is_bold=1), width=25, activeforeground="#333333",
                                      activebackground="#070", command=lambda: self.new_question(questions_options))
             continue_button.grid(row=4)
 
             # button to go back to the previous set of questions
             back_button = Button(self.question_frame, text="Practice longer", bg="#DB0", height=1, fg="#EEEEEE",
-                                     font=font_set(is_bold=1), width=25, activeforeground="#333333",
-                                     activebackground="#070", command=lambda: keep_practicing())
+                                 font=font_set(is_bold=1), width=25, activeforeground="#333333",
+                                 activebackground="#070", command=lambda: keep_practicing())
             back_button.grid(row=5)
 
             # change the title and translation to the new sections corresponding text
@@ -484,11 +512,11 @@ class FQMenu:
             global last_question
             global pre_last_question
             # set the question to a random question in the list of questions
-            question = random.randint(1, int(len(questions_list[questions_diff_group]))) - 1
+            question = randint(1, int(len(questions_list[questions_diff_group]))) - 1
 
             # if the chosen question is the same as one of the last 2 questions then pick another question at random
             while question == last_question or question == pre_last_question:
-                question = random.randint(1, int(len(questions_list[questions_diff_group]))) - 1
+                question = randint(1, int(len(questions_list[questions_diff_group]))) - 1
             pre_last_question = last_question
             last_question = question
 
@@ -496,12 +524,125 @@ class FQMenu:
             make_widget(questions_list[questions_diff_group][question])
 
         # go to next diff with bullet proofing
-        if (current_question == 0 or current_question % question_set_len == 0) and (self.starting_question < current_question) and (current_question < 4 * question_set_len):
+        if (current_question == 0 or current_question % question_set_len == 0) and (
+                self.starting_question < current_question) and (current_question < 4 * question_set_len):
             questions_diff_group += 1
 
+    # function to take the user to the help screen
+    def to_help(self):
+        DisplayHelp(self, current_question, self.starting_question)
 
 
+# info screen
+class DisplayHelp:
 
+    def __init__(self, partner, current_q, starting):
+        # setup dialogue box and background colour
+        background = "#DDB999"
+        q_r_color = "#000"
+        q_w_color = "#000"
+        c_s_color = "#000"
+        b_s_color = "#000"
+        p_r_color = "#000"
+        self.help_box = Toplevel()
+        self.help_box.geometry("355x484")
+
+        # diable answer buttons while looking at info
+        partner.stats_button.config(state=DISABLED)
+        for item in partner.questions_options:
+            item.config(state=DISABLED)
+
+        # closes info bow properly if top corner X is pressed
+        self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help, partner))
+
+        # frame for all the text and buttons to go in
+        self.help_frame = Frame(self.help_box, width=300, height=800)
+        self.help_frame.grid()
+
+        # the non colored text with gaps for the colored parts
+        help_text = "\nStats                             \n\n\n\n\n\n\n\n\n\n\n"
+        self.help_label = Label(self.help_frame, wraplength=500, text=help_text, justify="l", font=font_set(20),
+                                fg="#000")
+        self.help_label.grid()
+
+        # color config for the streak
+        if current_streak == best_streak:
+            b_s_color = "#585"
+            c_s_color = "#0B0"
+        elif current_streak > best_streak - 3:
+            b_s_color = "#0B0"
+            c_s_color = "#DD0"
+        elif best_streak > current_streak:
+            b_s_color = "#0B0"
+            c_s_color = "#F22"
+        if best_streak == 0:
+            b_s_color = "#000"
+        if current_streak == 0:
+            c_s_color = "#000"
+
+        # color config for the questions wrong / right
+        if questions_right > questions_wrong:
+            q_r_color = "#0B0"
+            q_w_color = "#585"
+        elif questions_right == questions_wrong and (current_q - starting - 1) > 1:
+            q_r_color = "#DD0"
+            q_w_color = "#DD0"
+        elif questions_right < questions_wrong:
+            q_r_color = "#922"
+            q_w_color = "#F22"
+
+        # try except code for if the pass rate calculation needs to divide by zero
+        try:
+            pass_rate = ((current_q - starting - questions_wrong - 2) / (current_q - starting - 2)) * 100
+        except ZeroDivisionError:
+            pass_rate = 0
+
+        # color config for pass rate
+        if pass_rate == 100:
+            p_r_color = "#0B0"
+        elif pass_rate > 75:
+            p_r_color = "#696"
+        elif pass_rate > 50:
+            p_r_color = "#DD0"
+        elif pass_rate > 25:
+            p_r_color = "#F80"
+        elif pass_rate > 0:
+            p_r_color = "#E33"
+
+        # list for the colored text to be placed
+        tmp_label_1_colours = [
+            [f"Current Question: {current_q - starting - 1}", "#000", 0],
+            [f"Questions Right: {questions_right}", q_r_color, 1],
+            [f"Questions Wrong: {questions_wrong}", q_w_color, 2],
+            [f"Current Streak: {current_streak}", c_s_color, 3],
+            [f"Best Streak: {best_streak}", b_s_color, 4],
+            [f"Pass Rate: {pass_rate:.0f}%", p_r_color, 5]
+        ]
+        # for loop to place all the colored text in the correct places
+        for i in range(0, len(tmp_label_1_colours)):
+            tmp_label_1_1 = Label(self.help_frame, wraplength=500, text=tmp_label_1_colours[i][0],
+                                  justify="left", font=font_set(16), foreground=tmp_label_1_colours[i][1],
+                                  background=background)
+            tmp_label_1_1.place(relx=0.5, x=-150, y=87 + (58 * tmp_label_1_colours[i][2]))
+
+        # button to close the info screen
+        self.dismiss_button = Button(self.help_frame, font=("Arial", "16", "bold"), text="Dismiss", width=25,
+                                     bg="#CC6600", fg="#FFFFFF",
+                                     command=partial(self.close_help, partner))
+        self.dismiss_button.grid(row=2, padx=10, pady=10)
+
+        # recolor the background of each item to orange
+        recolour_list = [self.help_frame, self.help_label]
+
+        for item in recolour_list:
+            item.config(bg=background)
+
+    # function for closing the info screen itself
+    def close_help(self, partner):
+        partner.stats_button.config(state=NORMAL)
+        for item in partner.questions_options:
+            item.config(state=NORMAL)
+        self.help_box.destroy()
 
 
 ##### Main Routine #####
@@ -514,14 +655,16 @@ if __name__ == "__main__":
     root.resizable(width=True, height=True)
     root.minsize(486, 600)
 
+
     # Bind the F11 key to the toggle_fullscreen function
     def toggle_fullscreen(event=None):
         state = not root.attributes("-fullscreen")
         root.attributes("-fullscreen", state)
+
+
     root.bind("<F11>", toggle_fullscreen)
 
     # Start application
     root.update_idletasks()
-    root.iconbitmap('ico.ico')
     StartMenu()
     root.mainloop()

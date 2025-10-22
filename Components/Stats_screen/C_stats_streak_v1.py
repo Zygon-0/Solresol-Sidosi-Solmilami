@@ -1,8 +1,9 @@
 ##### Imports #####
 import random
+from random import randint
 from tkinter import *
 from functools import partial
-from Solresol.Components.Grp_DB.C_grq_db_v4 import questions_list
+from Components.Grp_DB.C_grq_db_v4 import questions_list
 
 
 
@@ -16,7 +17,13 @@ root_geometry = ""
 # vars for the questions themselves
 question_set_len = 15 + 1 # questions + info screen
 current_question = 0
+questions_right = 0
+questions_wrong = 0
 got_q_wrong = 0
+
+# vars for the streak system
+current_streak = 0
+best_streak = 0
 
 # var for which question dif the player is at
 questions_diff_group = 0
@@ -292,6 +299,12 @@ class FQMenu:
             for count, items in enumerate(questions_options):
                 items.grid(row=count + 1, pady=5)
 
+            # make the stats screen button and place it on the screen
+            self.stats_button = Button(self.f_q_frame, text="     ℹ️", padx=0, pady=0, font=("Arial", 30),
+                                       highlightthickness=0, bd=0, fg="#EC0",
+                                       command=lambda: self.to_help())
+            self.stats_button.place(relx=0.5, x=-220, y=75, width=20, height=40)
+
         # function for the keep practicing button is pressed
         def keep_practicing():
             global current_question
@@ -303,11 +316,29 @@ class FQMenu:
 
         # function for when the correct answer button is pressed
         def correct_button_clicked():
+            global best_streak
+            global current_streak
+            global questions_right
+            questions_right += 1
+            current_streak += 1
+            if current_streak > best_streak:
+                best_streak = current_streak
             self.new_question(questions_options)
 
         # function for when any of the wrong answer buttons are pressed
         def wrong_button_clicked(error_text, button_text):
             self.sub_heading.config(text=error_text, fg="#E33")
+            global best_streak
+            global current_streak
+            global questions_wrong
+            global got_q_wrong
+            if got_q_wrong == 0:
+                questions_wrong += 1
+                got_q_wrong = 1
+
+            if current_streak > best_streak:
+                best_streak = current_streak
+            current_streak = 0
 
             for item in questions_options:
                 if item.cget("text") == button_text:
@@ -484,11 +515,11 @@ class FQMenu:
             global last_question
             global pre_last_question
             # set the question to a random question in the list of questions
-            question = random.randint(1, int(len(questions_list[questions_diff_group]))) - 1
+            question = randint(1, int(len(questions_list[questions_diff_group]))) - 1
 
             # if the chosen question is the same as one of the last 2 questions then pick another question at random
             while question == last_question or question == pre_last_question:
-                question = random.randint(1, int(len(questions_list[questions_diff_group]))) - 1
+                question = randint(1, int(len(questions_list[questions_diff_group]))) - 1
             pre_last_question = last_question
             last_question = question
 
@@ -499,6 +530,58 @@ class FQMenu:
         if (current_question == 0 or current_question % question_set_len == 0) and (self.starting_question < current_question) and (current_question < 4 * question_set_len):
             questions_diff_group += 1
 
+    # function to take the user to the help screen
+    def to_help(self):
+        DisplayHelp(self, current_question, self.starting_question)
+
+# info screen
+class DisplayHelp:
+
+    def __init__(self, partner, current_q, starting):
+        # setup dialogue box and background colour
+        background = "#ffe6cc"
+        c_s_color = ""
+        b_s_color = "#FF3"
+        p_r_color = "#000"
+        self.help_box = Toplevel()
+
+        # diable answer buttons while looking at info
+        partner.stats_button.config(state=DISABLED)
+        for item in partner.questions_options:
+            item.config(state=DISABLED)
+
+        # closes info bow properly if top corner X is pressed
+        self.help_box.protocol('WM_DELETE_WINDOW', partial(self.close_help, partner))
+
+        # frame for all the text and buttons to go in
+        self.help_frame = Frame(self.help_box, width=300, height=200)
+        self.help_frame.grid()
+
+        # the non colored text with gaps for the colored parts
+        help_text = (f"\n Current Question: {current_q - starting - 1} \n\n"
+                     f"\n Current Streak: {current_streak} \n\n"
+                     f"\n Best Streak: {best_streak} \n\n")
+        self.help_label = Label(self.help_frame, wraplength=500, text=help_text, justify="l", font=font_set(16))
+        self.help_label.grid()
+
+        # button to close the info screen
+        self.dismiss_button = Button(self.help_frame, font=("Arial", "16", "bold"), text="Dismiss", width=25,
+                                     bg="#CC6600", fg="#FFFFFF",
+                                     command=partial(self.close_help, partner))
+        self.dismiss_button.grid(row=2, padx=10, pady=10)
+
+        # recolor the background of each item to orange
+        recolour_list = [self.help_frame, self.help_label]
+
+        for item in recolour_list:
+            item.config(bg=background)
+
+    # function for closing the info screen itself
+    def close_help(self, partner):
+        partner.stats_button.config(state=NORMAL)
+        for item in partner.questions_options:
+            item.config(state=NORMAL)
+        self.help_box.destroy()
 
 
 
@@ -522,6 +605,5 @@ if __name__ == "__main__":
 
     # Start application
     root.update_idletasks()
-    root.iconbitmap('ico.ico')
     StartMenu()
     root.mainloop()
